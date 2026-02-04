@@ -79,4 +79,7 @@ for i, client in enumerate(clients):
                     st.session_state.impacto_total += impacto
                     st.experimental_rerun()
         else:
-            st.markdown(f"**Estrategia e**
+            # Línea corregida
+st.markdown(f"**Estrategia elegida:** {st.session_state.historial.loc[i, 'Estrategia']}")
+
+
