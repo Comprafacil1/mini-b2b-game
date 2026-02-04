@@ -13,7 +13,7 @@ st.set_page_config(
 # ---- Branding Premium ----
 st.markdown("""
 <div style='display:flex; justify-content:space-between; align-items:center'>
-<h1 style='color:#4B0082;'>🎯 Mini B2B Sales Challenge - Modo Killer</h1>
+<h1 style='color:#4B0082; font-size:36px;'>🎯 Mini B2B Sales Challenge - Modo Killer</h1>
 <span style='font-size:18px; font-weight:bold'>@Monik</span>
 </div>
 <p style='font-size:18px;'>Toma decisiones estratégicas y maximiza tu impacto en ventas B2B.  
@@ -110,8 +110,19 @@ st.metric(label="Impacto total", value=f"${int(st.session_state.impacto_total):,
 # ---- Juego completado ----
 if all(st.session_state.historial["Estrategia"] != ""):
     st.markdown("---")
-    st.markdown("### 🎡 Ruleta de premios (¡Haz clic para girar!)")
     
+    # Hacer la ruleta más destacada y grande
+    st.markdown("""
+    <div style="text-align: center; font-size: 24px; font-weight: bold; color: #FF5733;">
+        🎡 Ruleta de premios (¡Haz clic para girar!)
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 30px;">
+        <button style="background-color: #FF5733; font-size: 40px; color: white; padding: 20px 40px; border-radius: 50px; cursor: pointer;">
+            ¡Girar la Ruleta!
+        </button>
+    </div>
+    """, unsafe_allow_html=True)
+
     if "ruleta_girada" not in st.session_state:
         st.session_state.ruleta_girada = False
 
