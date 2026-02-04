@@ -78,9 +78,9 @@ for i, client in enumerate(clients):
                     st.session_state.historial.loc[i, "Impacto"] = impacto
                     st.session_state.historial.loc[i, "Semaforo"] = semaforo(factor)
                     st.session_state.impacto_total += impacto
-                    st.experimental_rerun()  # Recargar la página con el nuevo estado
+                    # Ya no utilizamos `st.experimental_rerun()` aquí, el flujo no recarga la página
         else:
-            # Mostrar resultados ya tomados, corregimos la indentación
+            # Mostrar resultados ya tomados
             st.markdown(f"**Estrategia elegida:** {st.session_state.historial.loc[i, 'Estrategia']}")
             st.markdown(f"**Impacto:** ${st.session_state.historial.loc[i, 'Impacto']:,}")
             st.markdown(f"**Semáforo:** {st.session_state.historial.loc[i, 'Semaforo']}")
