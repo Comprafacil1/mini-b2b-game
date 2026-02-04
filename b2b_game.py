@@ -79,32 +79,5 @@ for i, client in enumerate(clients):
                     st.experimental_rerun()
         else:
             # Aquí estaba el error de indentación
-            st.markdown(f"**Estrategia elegida:** {st.session_state.historial.loc[i, 'Estrategia']}")
-            st.markdown(f"**Impacto:** ${st.session_state.historial.loc[i, 'Impacto']:,}")
-            st.markdown(f"{st.session_state.historial.loc[i, 'Semaforo']}")
-
-# ---- Gráfico de barras dinámico ----
-st.markdown("---")
-st.markdown("### Impacto por cliente")
-impact_data = pd.DataFrame({
-    "Cliente": st.session_state.historial["Cuenta"],
-    "Impacto": st.session_state.historial["Impacto"]
-}).set_index("Cliente")
-st.bar_chart(impact_data)
-
-# ---- Barra de impacto total ----
-st.markdown("### Impacto total acumulado")
-st.metric(label="Impacto total", value=f"${int(st.session_state.impacto_total):,}")
-
-# ---- Juego completado ----
-if all(st.session_state.historial["Estrategia"] != ""):
-    st.markdown("---")
-    st.markdown("### 🎡 Ruleta de premios")
-    if "ruleta_girada" not in st.session_state:
-        st.session_state.ruleta_girada = False
-
-    if not st.session_state.ruleta_girada and st.button("Girar ruleta"):
-        premios = [
-            "🍖 Te ganaste un asado virtual!",
-            "🔄 Vuelve pronto",
+            st.markdown(f"**Estrategia eleg**
 
