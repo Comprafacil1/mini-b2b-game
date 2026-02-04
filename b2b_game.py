@@ -10,11 +10,43 @@ st.set_page_config(
     page_icon="🎯"
 )
 
+# ---- Estilo de fondo con imagen premium ----
+st.markdown("""
+    <style>
+    body {
+        background-image: url('https://www.example.com/background-premium.jpg'); /* URL de la imagen elegante */
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    .title {
+        color: #4B0082;
+        font-size: 36px;
+    }
+    .subtitle {
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .button {
+        background-color: #FF5733;
+        font-size: 20px;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 50px;
+        cursor: pointer;
+        border: none;
+    }
+    .button:hover {
+        background-color: #C13D26;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # ---- Branding Premium ----
 st.markdown("""
 <div style='display:flex; justify-content:space-between; align-items:center'>
-<h1 style='color:#4B0082; font-size:36px;'>🎯 Mini B2B Sales Challenge - Modo Killer</h1>
-<span style='font-size:18px; font-weight:bold'>@Monik</span>
+<h1 class="title">🎯 Mini B2B Sales Challenge - Modo Killer</h1>
+<span class="subtitle">@Monik</span>
 </div>
 <p style='font-size:18px;'>Toma decisiones estratégicas y maximiza tu impacto en ventas B2B.  
 Elige tu estrategia y observa cómo impactan tus resultados con cada cliente de tu cartera. ¡Diversión garantizada! 💼🎡</p>
@@ -86,77 +118,4 @@ for i, client in enumerate(clients):
                     st.session_state.historial.loc[i, "Estrategia"] = label
                     st.session_state.historial.loc[i, "Impacto"] = impacto
                     st.session_state.historial.loc[i, "Semaforo"] = semaforo(factor)
-                    st.session_state.impacto_total += impacto
-        else:
-            # Mostrar resultados ya tomados
-            st.markdown(f"**Estrategia elegida:** {st.session_state.historial.loc[i, 'Estrategia']}")
-            st.markdown(f"**Impacto:** ${st.session_state.historial.loc[i, 'Impacto']:,}")
-            st.markdown(f"**Semáforo:** {st.session_state.historial.loc[i, 'Semaforo']}")
-
-# ---- Gráfico de barras dinámico ----
-st.markdown("---")
-st.markdown("### Impacto por cliente")
-# Crear un DataFrame con el impacto de cada cliente
-impact_data = pd.DataFrame({
-    "Cliente": st.session_state.historial["Cuenta"],
-    "Impacto": st.session_state.historial["Impacto"]
-}).set_index("Cliente")
-st.bar_chart(impact_data)
-
-# ---- Barra de impacto total ----
-st.markdown("### Impacto total acumulado")
-st.metric(label="Impacto total", value=f"${int(st.session_state.impacto_total):,}")
-
-# ---- Juego completado ----
-if all(st.session_state.historial["Estrategia"] != ""):
-    st.markdown("---")
-    
-    # Hacer la ruleta más destacada y grande
-    st.markdown("""
-    <div style="text-align: center; font-size: 24px; font-weight: bold; color: #FF5733;">
-        🎡 Ruleta de premios (¡Haz clic para girar!)
-    </div>
-    <div style="display: flex; justify-content: center; margin-top: 30px;">
-        <button style="background-color: #FF5733; font-size: 40px; color: white; padding: 20px 40px; border-radius: 50px; cursor: pointer;">
-            ¡Girar la Ruleta!
-        </button>
-    </div>
-    """, unsafe_allow_html=True)
-
-    if "ruleta_girada" not in st.session_state:
-        st.session_state.ruleta_girada = False
-
-    # Mostrar botón para girar la ruleta solo si no se ha girado aún
-    if not st.session_state.ruleta_girada and st.button("Girar ruleta"):
-        # Lista de premios
-        premios = [
-            "🍖 Te ganaste un asado virtual!",
-            "🔄 Vuelve pronto",
-            "💰 Te ganaste un profit",
-            "🆕 Te ganaste un cliente"
-        ]
-        
-        placeholder = st.empty()  # Creamos un espacio para mostrar la animación
-        for _ in range(12):  # Simula que la ruleta está girando
-            premio_fake = random.choice(premios)
-            placeholder.markdown(f"🎡 Ruleta gira... {premio_fake}")
-            time.sleep(0.15)  # Pausa para dar el efecto de rotación
-
-        # Elegir un premio final aleatorio
-        premio_final = random.choice(premios)
-        placeholder.markdown(f"🎡 ¡La ruleta se detuvo en... {premio_final}!")
-        st.balloons()  # Animación de confetti
-        st.success(premio_final)
-        st.session_state.ruleta_girada = True
-
-    if st.button("Volver a jugar"):
-        # Reiniciar el juego
-        st.session_state.historial = pd.DataFrame({
-            "Cuenta": [c["nombre"] for c in clients],
-            "Estrategia": ["" for _ in clients],
-            "Impacto": [0 for _ in clients],
-            "Semaforo": ["" for _ in clients]
-        })
-        st.session_state.impacto_total = 0
-        st.session_state.ruleta_girada = False
-        st.experimental_rerun()
+                    st.session_state.i_
