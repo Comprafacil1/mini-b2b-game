@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import random
 import time
 
@@ -39,6 +38,7 @@ if "historial" not in st.session_state:
         "Impacto": [0 for _ in clients],
         "Semaforo": ["" for _ in clients]
     })
+
 if "impacto_total" not in st.session_state:
     st.session_state.impacto_total = 0
 
@@ -51,7 +51,7 @@ def semaforo(factor):
     else:
         return "🔴 Riesgo"
 
-# ---- Estrategias ----
+# ---- Estrategias disponibles ----
 strategies = {
     "🎯 Priorizar demo personalizada": 1.0,
     "💼 Negociar descuento estratégico": 0.7,
@@ -60,8 +60,9 @@ strategies = {
 
 # ---- Mostrar clientes en cards con botones ----
 st.markdown("### Tu cartera de clientes")
-cols = st.columns(len(clients))
+cols = st.columns(len(clients))  # Crea una columna por cada cliente
 
+# Iteramos sobre los clientes y mostramos botones para elegir estrategias
 for i, client in enumerate(clients):
     with cols[i]:
         st.markdown(f"**{client['nombre']}**")
@@ -69,6 +70,7 @@ for i, client in enumerate(clients):
         st.markdown(f"Potencial: ${client['potencial']:,}")
 
         if st.session_state.historial.loc[i, "Estrategia"] == "":
+            # Mostrar botones de estrategias disponibles
             for label, factor in strategies.items():
                 if st.button(label, key=f"{i}-{label}"):
                     impacto = client["potencial"] * factor
@@ -76,8 +78,6 @@ for i, client in enumerate(clients):
                     st.session_state.historial.loc[i, "Impacto"] = impacto
                     st.session_state.historial.loc[i, "Semaforo"] = semaforo(factor)
                     st.session_state.impacto_total += impacto
-                    st.experimental_rerun()
+                    st.experimental_rerun()  # Recargar la página con el nuevo estado
         else:
-            # Aquí estaba el error de indentación
-            st.markdown(f"**Estrategia eleg**
-
+            # Mostrar resultados ya tomados
