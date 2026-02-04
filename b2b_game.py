@@ -10,16 +10,25 @@ st.set_page_config(
     page_icon="🎯"
 )
 
-# ---- Branding premium ----
+# ---- Branding Premium ----
 st.markdown("""
 <div style='display:flex; justify-content:space-between; align-items:center'>
 <h1 style='color:#4B0082;'>🎯 Mini B2B Sales Challenge - Modo Killer</h1>
 <span style='font-size:18px; font-weight:bold'>@Monik</span>
 </div>
 <p style='font-size:18px;'>Toma decisiones estratégicas y maximiza tu impacto en ventas B2B.  
-Todos los clientes de tu cartera visibles, elige tu estrategia y observa resultados dinámicos.</p>
+Elige tu estrategia y observa cómo impactan tus resultados con cada cliente de tu cartera. ¡Diversión garantizada! 💼🎡</p>
 <hr>
 """, unsafe_allow_html=True)
+
+# ---- Instrucciones Iniciales ----
+st.markdown("""
+### **¿Cómo jugar?**
+1. **Elige un cliente** de tu cartera.
+2. **Selecciona una estrategia** para ese cliente.
+3. **Mira los resultados dinámicos**: ¡Cada decisión tiene un impacto!
+4. **Cuando termines**, ¡Gira la ruleta de premios para ver qué ganaste! 🎉
+""")
 
 # ---- Clientes ----
 clients = [
@@ -78,7 +87,6 @@ for i, client in enumerate(clients):
                     st.session_state.historial.loc[i, "Impacto"] = impacto
                     st.session_state.historial.loc[i, "Semaforo"] = semaforo(factor)
                     st.session_state.impacto_total += impacto
-                    # Ya no utilizamos `st.experimental_rerun()` aquí, el flujo no recarga la página
         else:
             # Mostrar resultados ya tomados
             st.markdown(f"**Estrategia elegida:** {st.session_state.historial.loc[i, 'Estrategia']}")
@@ -102,7 +110,7 @@ st.metric(label="Impacto total", value=f"${int(st.session_state.impacto_total):,
 # ---- Juego completado ----
 if all(st.session_state.historial["Estrategia"] != ""):
     st.markdown("---")
-    st.markdown("### 🎡 Ruleta de premios")
+    st.markdown("### 🎡 Ruleta de premios (¡Haz clic para girar!)")
     
     if "ruleta_girada" not in st.session_state:
         st.session_state.ruleta_girada = False
