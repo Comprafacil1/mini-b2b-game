@@ -14,7 +14,7 @@ st.set_page_config(
 st.markdown("""
     <style>
     body {
-        background-image: url('https://www.example.com/background-premium.jpg'); /* URL de la imagen elegante */
+        background-image: url('https://www.wallpaperflare.com/static/115/660/246/business-computer-finance-photo.jpg'); /* Imagen premium para el fondo */
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -148,18 +148,13 @@ if all(st.session_state.historial["Estrategia"] != ""):
     <div style="text-align: center; font-size: 36px; font-weight: bold; color: #FF5733; padding: 20px;">
         🎡 **Ruleta de premios** (¡Haz clic para girar!)
     </div>
-    <div style="display: flex; justify-content: center; margin-top: 30px;">
-        <button class="button">
-            ¡Girar la Ruleta!
-        </button>
-    </div>
     """, unsafe_allow_html=True)
 
     if "ruleta_girada" not in st.session_state:
         st.session_state.ruleta_girada = False
 
-    # Mostrar botón para girar la ruleta solo si no se ha girado aún
-    if not st.session_state.ruleta_girada and st.button("Girar ruleta"):
+    # Botón grande para girar la ruleta (y eliminar el botón pequeño)
+    if not st.session_state.ruleta_girada and st.button("¡Girar la Ruleta!", key="girar_grande"):
         # Lista de premios
         premios = [
             "🍖 Te ganaste un asado virtual!",
