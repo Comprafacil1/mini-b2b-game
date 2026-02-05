@@ -118,4 +118,73 @@ for i, client in enumerate(clients):
                     st.session_state.historial.loc[i, "Estrategia"] = label
                     st.session_state.historial.loc[i, "Impacto"] = impacto
                     st.session_state.historial.loc[i, "Semaforo"] = semaforo(factor)
-                    st.session_state.i_
+                    st.session_state.impacto_total += impacto
+        else:
+            # Mostrar resultados ya tomados
+            st.markdown(f"**Estrategia elegida:** {st.session_state.historial.loc[i, 'Estrategia']}")
+            st.markdown(f"**Impacto:** ${st.session_state.historial.loc[i, 'Impacto']:,}")
+            st.markdown(f"**Semáforo:** {st.session_state.historial.loc[i, 'Semaforo']}")
+
+# ---- Gráfico de barras dinámico ----
+st.markdown("---")
+st.markdown("### Impacto por cliente")
+# Crear un DataFrame con el impacto de cada cliente
+impact_data = pd.DataFrame({
+    "Cliente": st.session_state.historial["Cuenta"],
+    "Impacto": st.session_state.historial["Impacto"]
+}).set_index("Cliente")
+st.bar_chart(impact_data)
+
+# ---- Barra de impacto total ----
+st.markdown("### Impacto total acumulado")
+st.metric(label="Impacto total", value=f"${int(st.session_state.impacto_total):,}")
+
+# ---- Juego completado ----
+if all(st.session_state.historial["Estrategia"] != ""):
+    st.markdown("---")
+    
+    # Hacer la ruleta más destacada y grande
+    st.markdown("""
+    <div style="text-align: center; font-size: 36px; font-weight: bold; color: #FF5733; padding: 20px;">
+        🎡 **Ruleta de premios** (¡Haz clic para girar!)
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 30px;">
+        <button class="button">
+            ¡Girar la Ruleta!
+        </button>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if "ruleta_girada" not in st.session_state:
+        st.session_state.ruleta_girada = False
+
+    # Mostrar botón para girar la ruleta solo si no se ha girado aún
+    if not st.session_state.ruleta_girada and st.button("Girar ruleta"):
+        # Lista de premios
+        premios = [
+            "🍖 Te ganaste un asado virtual!",
+            "🔄 Vuelve pronto",
+            "💰 Te ganaste un profit",
+            "🆕 Te ganaste un cliente"
+        ]
+        
+        placeholder = st.empty()  # Creamos un espacio para mostrar la animación
+        for _ in range(12):  # Simula que la ruleta está girando
+            premio_fake = random.choice(premios)
+            placeholder.markdown(f"🎡 Ruleta gira... {premio_fake}", unsafe_allow_html=True)
+            time.sleep(0.15)  # Pausa para dar el efecto de rotación
+
+        # Elegir un premio final aleatorio
+        premio_final = random.choice(premios)
+        placeholder.markdown(f"🎡 ¡La ruleta se detuvo en... {premio_final}!", unsafe_allow_html=True)
+        st.balloons()  # Animación de confetti
+        st.success(premio_final)
+        st.session_state.ruleta_girada = True
+
+    if st.button("Volver a jugar"):
+        # Reiniciar el juego
+        st.session_state.historial = pd.DataFrame({
+            "Cuenta": [c["nombre"] for c in clients],
+            "Estrategia": ["" for _ in clients],
+            "Impacto": [0 for _ in clients
+
