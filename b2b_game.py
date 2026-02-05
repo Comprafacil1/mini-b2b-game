@@ -186,5 +186,9 @@ if all(st.session_state.historial["Estrategia"] != ""):
         st.session_state.historial = pd.DataFrame({
             "Cuenta": [c["nombre"] for c in clients],
             "Estrategia": ["" for _ in clients],
-            "Impacto": [0 for _ in clients
-
+            "Impacto": [0 for _ in clients],
+            "Semaforo": ["" for _ in clients]
+        })
+        st.session_state.impacto_total = 0
+        st.session_state.ruleta_girada = False
+        st.experimental_rerun()
