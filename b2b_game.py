@@ -83,6 +83,9 @@ if "historial" not in st.session_state:
 if "impacto_total" not in st.session_state:
     st.session_state.impacto_total = 0
 
+if "ruleta_girada" not in st.session_state:
+    st.session_state.ruleta_girada = False
+
 # ---- Función semáforo ----
 def semaforo(factor):
     if factor >= 0.9:
@@ -150,40 +153,40 @@ if all(st.session_state.historial["Estrategia"] != ""):
     </div>
     """, unsafe_allow_html=True)
 
-    if "ruleta_girada" not in st.session_state:
-        st.session_state.ruleta_girada = False
+    # Botón grande para girar la ruleta
+    if not st.session_state.ruleta_girada:
+        if st.button("¡Girar la Ruleta!", key="girar_grande"):
+            # Lista de premios
+            premios = [
+                "🍖 Te ganaste un asado virtual!",
+                "🔄 Vuelve pronto",
+                "💰 Te ganaste un profit",
+                "🆕 Te ganaste un cliente"
+            ]
+            
+            placeholder = st.empty()  # Creamos un espacio para mostrar la animación
+            for _ in range(12):  # Simula que la ruleta está girando
+                premio_fake = random.choice(premios)
+                placeholder.markdown(f"🎡 Ruleta gira... {premio_fake}", unsafe_allow_html=True)
+                time.sleep(0.15)  # Pausa para dar el efecto de rotación
 
-    # Botón grande para girar la ruleta (y eliminar el botón pequeño)
-    if not st.session_state.ruleta_girada and st.button("¡Girar la Ruleta!", key="girar_grande"):
-        # Lista de premios
-        premios = [
-            "🍖 Te ganaste un asado virtual!",
-            "🔄 Vuelve pronto",
-            "💰 Te ganaste un profit",
-            "🆕 Te ganaste un cliente"
-        ]
-        
-        placeholder = st.empty()  # Creamos un espacio para mostrar la animación
-        for _ in range(12):  # Simula que la ruleta está girando
-            premio_fake = random.choice(premios)
-            placeholder.markdown(f"🎡 Ruleta gira... {premio_fake}", unsafe_allow_html=True)
-            time.sleep(0.15)  # Pausa para dar el efecto de rotación
+            # Elegir un premio final aleatorio
+            premio_final = random.choice(premios)
+            placeholder.markdown(f"🎡 ¡La ruleta se detuvo en... {premio_final}!", unsafe_allow_html=True)
+            st.balloons()  # Animación de confetti
+            st.success(premio_final)
+            st.session_state.ruleta_girada = True
 
-        # Elegir un premio final aleatorio
-        premio_final = random.choice(premios)
-        placeholder.markdown(f"🎡 ¡La ruleta se detuvo en... {premio_final}!", unsafe_allow_html=True)
-        st.balloons()  # Animación de confetti
-        st.success(premio_final)
-        st.session_state.ruleta_girada = True
+# ---- Reiniciar juego ----
+if st.button("Volver a jugar"):
+    # Reiniciar el juego
+    st.session_state.historial = pd.DataFrame({
+        "Cuenta": [c["nombre"] for c in clients],
+        "Estrategia": ["" for _ in clients],
+        "Impacto": [0 for _ in clients],
+        "Semaforo": ["" for _ in clients]
+    })
+    st.session_state.impacto_total = 0
+    st.session_state.ruleta_girada = False
+    st.experimental_rerun()
 
-    if st.button("Volver a jugar"):
-        # Reiniciar el juego
-        st.session_state.historial = pd.DataFrame({
-            "Cuenta": [c["nombre"] for c in clients],
-            "Estrategia": ["" for _ in clients],
-            "Impacto": [0 for _ in clients],
-            "Semaforo": ["" for _ in clients]
-        })
-        st.session_state.impacto_total = 0
-        st.session_state.ruleta_girada = False
-        st.experimental_rerun()
